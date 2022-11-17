@@ -5,22 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-	public function __construct()
-	{
-		$this->middleware('auth:api', ['except' => ['login', 'register']]);
-	}
-
-	public function register(StoreUserRequest $request)
+	public function register(StoreUserRequest $request): JsonResponse
 	{
 		$user = User::create($request->validated());
 		auth()->login($user);
 		return response()->json('User successfuly registered!', 200);
 	}
 
-	public function login(LoginRequest $request)
+	public function login(LoginRequest $request): JsonResponse
 	{
 		$token = auth()->attempt($request->all());
 		if (!$token)
@@ -30,21 +26,27 @@ class AuthController extends Controller
 				'message' => 'Unauthorized',
 			], 401);
 		}
-		$user = auth()->user();
-		return response()->json([
-			'status'        => 'success',
-			'user'          => $user,
-			'authorisation' => [
-				'token' => $token,
-				'type'  => 'bearer',
-			],
-		]);
+		return $this->respondWithToken($token);
 	}
 
-	public function logout()
+	public function logout(): JsonResponse
 	{
 		auth()->logout();
 
 		return response()->json(['message' => 'Successfully logged out']);
+	}
+
+	public function user(): JsonResponse
+	{
+		return response()->json(auth()->user(), 200);
+	}
+
+	protected function respondWithToken(string $token): JsonResponse
+	{
+		return response()->json([
+			'access_token' => $token,
+			'token_type'   => 'bearer',
+			'expires_in'   => auth()->factory()->getTTL() * 60,
+		]);
 	}
 }
