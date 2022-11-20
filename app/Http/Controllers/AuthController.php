@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use Carbon\Carbon;
+use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -12,36 +14,35 @@ class AuthController extends Controller
 	public function register(StoreUserRequest $request): JsonResponse
 	{
 		$user = User::create($request->validated());
-		auth()->login($user);
-		return response()->json('User successfuly registered!', 200);
+		return response()->json('User successfuly registered!', 201);
 	}
 
 	public function login(LoginRequest $request): JsonResponse
 	{
-		$token = auth()->attempt($request->all());
-		if (!$token)
+		$authenticated = auth()->attempt($request->all());
+		if (!$authenticated)
 		{
 			return response()->json([
 				'status'  => 'error',
 				'message' => 'Unauthorized',
 			], 401);
 		}
-		return $this->respondWithToken($token);
+		$payload = [
+			'exp' => Carbon::now()->addSeconds(30)->timestamp,
+			'uid' => User::where('email', '=', $request->email)->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
+
+		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json('success', 200)->withCookie($cookie);
 	}
 
 	public function logout(): JsonResponse
 	{
-		auth()->logout();
+		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json(['message' => 'Successfully logged out']);
-	}
-
-	protected function respondWithToken(string $token): JsonResponse
-	{
-		return response()->json([
-			'access_token' => $token,
-			'token_type'   => 'bearer',
-			'expires_in'   => auth()->factory()->getTTL() * 60,
-		]);
+		return response()->json('success', 200)->withCookie($cookie);
 	}
 }
