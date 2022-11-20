@@ -19,7 +19,7 @@ Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
 //more routes to be added
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 	Route::get('user', [UserController::class, 'index'])->name('user.index');
 });

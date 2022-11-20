@@ -8,6 +8,12 @@ class UserController extends Controller
 {
 	public function index(): JsonResponse
 	{
-		return response()->json(auth()->user(), 200);
+		return response()->json(
+			[
+				'message' => 'authenticated successfully',
+				'user'    => jwtUser(),
+			],
+			200
+		);
 	}
 }
