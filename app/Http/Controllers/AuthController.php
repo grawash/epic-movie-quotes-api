@@ -28,7 +28,7 @@ class AuthController extends Controller
 			], 401);
 		}
 		$payload = [
-			'exp' => Carbon::now()->addSeconds(30)->timestamp,
+			'exp' => Carbon::now()->addMinutes(30)->timestamp,
 			'uid' => User::where('email', '=', $request->email)->first()->id,
 		];
 
@@ -36,7 +36,7 @@ class AuthController extends Controller
 
 		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
-		return response()->json('success', 200)->withCookie($cookie);
+		return response()->json(['success', $jwt], 200)->withCookie($cookie);
 	}
 
 	public function logout(): JsonResponse
