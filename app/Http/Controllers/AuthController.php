@@ -8,12 +8,14 @@ use App\Models\User;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
 	public function register(StoreUserRequest $request): JsonResponse
 	{
 		$user = User::create($request->validated());
+		event(new Registered($user));
 		return response()->json('User successfuly registered!', 201);
 	}
 
