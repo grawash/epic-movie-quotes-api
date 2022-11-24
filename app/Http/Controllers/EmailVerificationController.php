@@ -9,15 +9,14 @@ use Firebase\JWT\JWT;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 
-class VerificationController extends Controller
+class EmailVerificationController extends Controller
 {
-	public function verify(VerifyRequest $request)
+	public function verify(VerifyRequest $request, User $id)
 	{
-		$user = User::find($request->route('id'));
+		$user = $id;
 
 		if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification())))
 		{
-			// dd('it should work');
 			throw new AuthorizationException();
 		}
 

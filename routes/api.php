@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
 
 //more routes to be added
 Route::group(['middleware' => 'jwt.auth'], function () {
