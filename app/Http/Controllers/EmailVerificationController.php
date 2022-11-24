@@ -11,9 +11,8 @@ use Illuminate\Auth\Events\Verified;
 
 class EmailVerificationController extends Controller
 {
-	public function verify(VerifyRequest $request, User $id)
+	public function verify(VerifyRequest $request, User $user)
 	{
-		$user = $id;
 		if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification())))
 		{
 			throw new AuthorizationException();
