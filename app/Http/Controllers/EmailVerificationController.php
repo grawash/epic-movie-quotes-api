@@ -14,7 +14,6 @@ class EmailVerificationController extends Controller
 	public function verify(VerifyRequest $request, User $id)
 	{
 		$user = $id;
-
 		if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification())))
 		{
 			throw new AuthorizationException();
