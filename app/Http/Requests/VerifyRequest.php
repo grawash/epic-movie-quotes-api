@@ -14,8 +14,8 @@ class VerifyRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'id'   => '',
-			'hash' => '',
+			'id'   => 'required',
+			'hash' => 'required',
 		];
 	}
 }
