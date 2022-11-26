@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,9 @@ Route::get('email/verify/{user:id}/{hash}', [EmailVerificationController::class,
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 	Route::get('user', [UserController::class, 'index'])->name('user.index');
+});
+Route::controller(ResetPasswordController::class)->group(function () {
+	Route::post('forgot-password', 'email')->name('password.email');
+	// Route::get('/reset-password/{token}', 'reset')->name('password.reset');
+	// Route::post('/reset-password', 'update')->name('password.update');
 });
