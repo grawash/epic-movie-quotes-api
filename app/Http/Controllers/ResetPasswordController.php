@@ -20,9 +20,6 @@ class ResetPasswordController extends Controller
 			$request->only('email')
 		);
 		return response()->json($status, 201);
-		// return $status === Password::RESET_LINK_SENT
-		// 			? back()->with(['status' => __($status)])
-		// 			: back()->withErrors(['email' => __($status)]);
 	}
 
 	public function update(ResetPasswordRequest $request): JsonResponse
@@ -49,8 +46,5 @@ class ResetPasswordController extends Controller
 		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
 		return response()->json(['success', $jwt], 200)->withCookie($cookie);
-		// return $status === Password::PASSWORD_RESET
-		// 			? redirect()->route('reset.login')->with('status', __($status))
-		// 			: back()->withErrors(['email' => [__($status)]]);
 	}
 }
