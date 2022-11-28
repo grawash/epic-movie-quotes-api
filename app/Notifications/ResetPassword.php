@@ -45,7 +45,7 @@ class ResetPassword extends Notification
 	{
 		return (new MailMessage)
 			->line('You are receiving this email because we received a password reset request for your account.')
-			->action('Reset Password', url('http://127.0.0.1:5173/') . '?token=' . urlencode($this->token) . '&email=' . urlencode($notifiable->email)); // add this. this is $actionUrl
+			->action('Reset Password', url(config('auth.front_end_full_domain')) . '?token=' . urlencode($this->token) . '&email=' . urlencode($notifiable->email)); // add this. this is $actionUrl
 	}
 
 	/*

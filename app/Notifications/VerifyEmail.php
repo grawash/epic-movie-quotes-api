@@ -75,7 +75,7 @@ class VerifyEmail extends Notification
 	 */
 	protected function verificationUrl($notifiable)
 	{
-		return 'http://127.0.0.1:5173/?' . http_build_query(
+		return config('auth.front_end_full_domain') . '?' . http_build_query(
 			[
 				'verifyLink' => URL::temporarySignedRoute(
 					'verification.verify',
