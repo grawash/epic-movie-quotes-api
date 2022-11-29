@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Auth\Events\Registered;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -46,5 +47,41 @@ class AuthController extends Controller
 		$cookie = cookie('access_token', '', 0, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
 
 		return response()->json('success', 200)->withCookie($cookie);
+	}
+
+	public function googleAuthentication()
+	{
+		return response()->json([
+			'url' => Socialite::driver('google')->stateless()->redirect()->getTargetUrl(),
+		]);
+	}
+
+	public function googleRedirect()
+	{
+		$googleUser = Socialite::driver('google')->stateless()->user();
+		if (!User::where('email', $googleUser->email)->first())
+		{
+			$status = 'created';
+			$user = User::updateOrCreate([
+				'name'                 => $googleUser->name,
+				'email'                => $googleUser->email,
+				'password'             => $googleUser->id,
+			]);
+		}
+		else
+		{
+			$status = 'login';
+			$user = User::where('email', $googleUser->email)->first();
+		}
+		$payload = [
+			'exp' => Carbon::now()->addMinutes(30)->timestamp,
+			'uid' => User::where('email', '=', $user->email)->first()->id,
+		];
+
+		$jwt = JWT::encode($payload, config('auth.jwt_secret'), 'HS256');
+
+		$cookie = cookie('access_token', $jwt, 30, '/', config('auth.front_end_top_level_domain'), true, true, false, 'Strict');
+
+		return response()->json(['success', $jwt, $user, 'status' => $status], 200)->withCookie($cookie);
 	}
 }
