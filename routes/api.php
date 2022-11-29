@@ -31,3 +31,5 @@ Route::controller(ResetPasswordController::class)->group(function () {
 	// Route::get('/reset-password/{token}', 'reset')->name('password.reset');
 	Route::post('reset-password', 'update')->name('password.update');
 });
+Route::get('auth/redirect', [AuthController::class, 'googleAuthentication'])->name('google.auth');
+Route::get('auth/callback', [AuthController::class, 'googleRedirect'])->name('google.redirect');
