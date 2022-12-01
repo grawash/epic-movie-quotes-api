@@ -5,18 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Auth\Events\Registered;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
 	public function register(StoreUserRequest $request): JsonResponse
 	{
 		$user = User::create($request->validated());
-		event(new Registered($user));
+		// event(new Registered($user));
+		$token = Str::random(32);
+		$user->notify(new VerifyEmail($token));
 		return response()->json('User successfuly registered!', 201);
 	}
 
