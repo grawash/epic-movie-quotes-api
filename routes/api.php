@@ -26,8 +26,9 @@ Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'ver
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 	Route::get('user', [UserController::class, 'index'])->name('user.index');
+	Route::post('new-password', [ResetPasswordController::class, 'newPasswordEmail'])->name('new.password.email');
 });
-Route::post('new-password', [ResetPasswordController::class, 'newPasswordEmail'])->name('new.password.email');
+Route::post('update-name', [UserController::class, 'updateName'])->name('name.update');
 Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('forgot-password', 'email')->name('password.email');
 	// Route::get('/reset-password/{token}', 'reset')->name('password.reset');
