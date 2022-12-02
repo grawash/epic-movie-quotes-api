@@ -70,6 +70,7 @@ class AuthController extends Controller
 				'name'                 => $googleUser->name,
 				'email'                => $googleUser->email,
 				'password'             => $googleUser->id,
+				'google_authenticated' => true,
 			]);
 		}
 		else
