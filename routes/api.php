@@ -27,8 +27,8 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 	Route::get('user', [UserController::class, 'index'])->name('user.index');
 	Route::post('reset-password', [ResetPasswordController::class, 'SendResetLink'])->name('new.password.email');
+	Route::post('update-user', [UserController::class, 'update'])->name('user.update');
 });
-Route::post('update-name', [UserController::class, 'updateName'])->name('name.update');
 Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('forgot-password', 'email')->name('password.email');
 	Route::post('password-recovery', 'update')->name('password.update');

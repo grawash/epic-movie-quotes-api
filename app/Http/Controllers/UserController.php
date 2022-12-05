@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -18,10 +21,27 @@ class UserController extends Controller
 		);
 	}
 
-	public function updateName(UpdateUserRequest $request)
+	public function update(UpdateUserRequest $request)
 	{
 		$user = jwtUser();
-		$user->name = $request->name;
+		if ($request->name)
+		{
+			$user->name = $request->name;
+		}
+		if ($request->password)
+		{
+			Password::reset(
+				$request->only('email', 'password', 'password_confirmation', 'token'),
+				function ($user, $password) {
+					$user->forceFill([
+						'password' => $password,
+					])->setRememberToken(Str::random(60));
+					$user->save();
+
+					event(new PasswordReset($user));
+				}
+			);
+		}
 		$user->save();
 		return response()->json(['succes', $user], 200);
 	}
