@@ -23,7 +23,7 @@ class ResetPasswordController extends Controller
 		return response()->json($status, 201);
 	}
 
-	public function newPasswordEmail(PostResetRequest $request): JsonResponse
+	public function SendResetLink(PostResetRequest $request): JsonResponse
 	{
 		$user = User::where('email', $request->email)->first();
 		$token = app(\Illuminate\Auth\Passwords\PasswordBroker::class)->createToken($user);
