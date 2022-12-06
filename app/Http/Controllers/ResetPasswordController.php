@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostResetRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
+use App\Notifications\NewPassword;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
@@ -20,6 +21,14 @@ class ResetPasswordController extends Controller
 			$request->only('email')
 		);
 		return response()->json($status, 201);
+	}
+
+	public function SendResetLink(PostResetRequest $request): JsonResponse
+	{
+		$user = User::where('email', $request->email)->first();
+		$token = app(\Illuminate\Auth\Passwords\PasswordBroker::class)->createToken($user);
+		$user->notify(new NewPassword($token));
+		return response()->json('success', 201);
 	}
 
 	public function update(ResetPasswordRequest $request): JsonResponse

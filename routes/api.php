@@ -20,16 +20,18 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
+//create another route to verify email in other table
 
 //more routes to be added
 Route::group(['middleware' => 'jwt.auth'], function () {
-	Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 	Route::get('user', [UserController::class, 'index'])->name('user.index');
+	Route::post('reset-password', [ResetPasswordController::class, 'SendResetLink'])->name('new.password.email');
+	Route::post('update-user', [UserController::class, 'update'])->name('user.update');
 });
 Route::controller(ResetPasswordController::class)->group(function () {
 	Route::post('forgot-password', 'email')->name('password.email');
-	// Route::get('/reset-password/{token}', 'reset')->name('password.reset');
-	Route::post('reset-password', 'update')->name('password.update');
+	Route::post('password-recovery', 'update')->name('password.update');
 });
 Route::get('auth/redirect', [AuthController::class, 'googleAuthentication'])->name('google.auth');
 Route::get('auth/callback', [AuthController::class, 'googleRedirect'])->name('google.redirect');
