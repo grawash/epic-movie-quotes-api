@@ -55,4 +55,12 @@ class MovieController extends Controller
 		$genres = $movie->genre()->get();
 		return response()->json(['movie' => $movie, 'genres' => $genres], 200);
 	}
+
+	public function delete(Movie $id): JsonResponse
+	{
+		$movie = $id;
+		$movie->delete();
+		$movie->genre()->detach();
+		return response()->json('movie was deleted', 200);
+	}
 }

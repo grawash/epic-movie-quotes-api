@@ -24,6 +24,7 @@ Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'ver
 Route::post('create-movie', [MovieController::class, 'store'])->name('movie.store');
 Route::get('movies-list', [MovieController::class, 'getList'])->name('movie.list');
 Route::get('movie/{id}', [MovieController::class, 'getMovie'])->name('movie.get');
+Route::get('delete-movie/{id}', [MovieController::class, 'delete'])->name('movie.delete');
 
 //create another route to verify email in other table
 
