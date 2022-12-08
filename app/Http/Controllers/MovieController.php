@@ -43,9 +43,16 @@ class MovieController extends Controller
 		return response()->json($movie, 201);
 	}
 
-	public function get(): JsonResponse
+	public function getList(): JsonResponse
 	{
 		$movies = Movie::all();
 		return response()->json($movies, 200);
+	}
+
+	public function getMovie(Movie $id): JsonResponse
+	{
+		$movie = $id;
+		$genres = $movie->genre()->get();
+		return response()->json(['movie' => $movie, 'genres' => $genres], 200);
 	}
 }
