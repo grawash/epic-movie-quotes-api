@@ -56,6 +56,35 @@ class MovieController extends Controller
 		return response()->json(['movie' => $movie, 'genres' => $genres], 200);
 	}
 
+	public function update(StoreMovieRequest $request, Movie $id): JsonResponse
+	{
+		$movie = $id;
+		$movie->genre()->detach();
+		$movie->update($request->only('title', 'director', 'description', 'file'));
+		$slug = str_replace(' ', '-', $request->title);
+		$movie->slug = $slug;
+
+		if ($request->genre)
+		{
+			foreach ($request->genre as $gen)
+			{
+				$genreExists = Genre::where('name', '=', $gen)->first();
+				if ($genreExists)
+				{
+					$movie->genre()->attach($genreExists);
+				}
+				else
+				{
+					$genre = new Genre();
+					$genre->name = $gen;
+					$genre->save();
+					$movie->genre()->attach($genre);
+				}
+			}
+		}
+		return response()->json(['movie' => $movie], 200);
+	}
+
 	public function delete(Movie $id): JsonResponse
 	{
 		$movie = $id;

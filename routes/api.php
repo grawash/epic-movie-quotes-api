@@ -25,6 +25,7 @@ Route::post('create-movie', [MovieController::class, 'store'])->name('movie.stor
 Route::get('movies-list', [MovieController::class, 'getList'])->name('movie.list');
 Route::get('movie/{id}', [MovieController::class, 'getMovie'])->name('movie.get');
 Route::get('delete-movie/{id}', [MovieController::class, 'delete'])->name('movie.delete');
+Route::patch('update-movie/{id}', [MovieController::class, 'update'])->name('movie.update');
 
 //create another route to verify email in other table
 
