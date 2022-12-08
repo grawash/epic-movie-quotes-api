@@ -11,23 +11,41 @@ class MovieController extends Controller
 {
 	public function store(StoreMovieRequest $request): JsonResponse
 	{
+		$imageName = time() . '.' . $request->file->getClientOriginalExtension();
+		$image = $request->file('file');
+		$path = $image->storeAs('public/movieImages', $imageName);
 		$movie = new Movie();
 		$movie->title = $request->title;
 		$slug = str_replace(' ', '-', $request->title);
 		$movie->slug = $slug;
 		$movie->director = $request->director;
 		$movie->description = $request->description;
+		$movie->thumbnail = $path;
 		$movie->save();
 		if ($request->genre)
 		{
 			foreach ($request->genre as $gen)
 			{
-				$genre = new Genre();
-				$genre->name = $gen;
-				$genre->save();
-				$movie->genre()->attach($genre);
+				$genreExists = Genre::where('name', '=', $gen)->first();
+				if ($genreExists)
+				{
+					$movie->genre()->attach($genreExists);
+				}
+				else
+				{
+					$genre = new Genre();
+					$genre->name = $gen;
+					$genre->save();
+					$movie->genre()->attach($genre);
+				}
 			}
 		}
 		return response()->json($movie, 201);
+	}
+
+	public function get(): JsonResponse
+	{
+		$movies = Movie::all();
+		return response()->json($movies, 200);
 	}
 }
