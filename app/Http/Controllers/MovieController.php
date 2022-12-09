@@ -45,8 +45,9 @@ class MovieController extends Controller
 	{
 		$path = $this->verifyAndUpload($request->thumbnail, 'movieImages');
 		$movie->genre()->detach();
-		$movie->update($request->only('title', 'director', 'description', 'slug'));
-		$movie->thumbnail = $path;
+		$validated = $request->only('title', 'description', 'director', 'slug');
+		$validated['thumbnail'] = $path;
+		$movie->update($validated);
 		foreach ($request->genre as $gen)
 		{
 			$genre = Genre::firstOrCreate(['name' => $gen]);

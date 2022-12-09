@@ -27,7 +27,7 @@ Route::controller(MovieController::class)->group(function () {
 	Route::get('movies-list/{user}', 'index')->name('movie.index');
 	Route::get('movie/{movie}', 'show')->name('movie.show');
 	Route::get('delete-movie/{movie}', 'destroy')->name('movie.destroy');
-	Route::patch('update-movie/{movie}', 'update')->name('movie.update');
+	Route::post('update-movie/{movie}', 'update')->name('movie.update');
 });
 
 Route::group(['middleware' => 'jwt.auth'], function () {
