@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovieRequest;
+use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\User;
@@ -41,7 +42,7 @@ class MovieController extends Controller
 		return response()->json(['movie' => $movie], 200);
 	}
 
-	public function update(StoreMovieRequest $request, Movie $movie): JsonResponse
+	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
 	{
 		$path = $this->verifyAndUpload($request->thumbnail, 'movieImages');
 		$movie->genre()->detach();
