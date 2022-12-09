@@ -18,7 +18,7 @@ class StoreMovieRequest extends FormRequest
 			'director'         => 'required',
 			'description'      => 'required',
 			'genre'            => 'required',
-			'thumbnail'        => 'required|image',
+			'thumbnail'        => '',
 		];
 	}
 
