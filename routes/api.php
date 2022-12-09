@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
-Route::post('create-movie/{id}', [MovieController::class, 'store'])->name('movie.store');
-Route::get('movies-list', [MovieController::class, 'getList'])->name('movie.list');
-Route::get('movie/{id}', [MovieController::class, 'getMovie'])->name('movie.get');
-Route::get('delete-movie/{id}', [MovieController::class, 'delete'])->name('movie.delete');
-Route::patch('update-movie/{id}', [MovieController::class, 'update'])->name('movie.update');
+Route::post('create-movie/{user}', [MovieController::class, 'store'])->name('movie.store');
+Route::get('movies-list', [MovieController::class, 'index'])->name('movie.index');
+Route::get('movie/{movie}', [MovieController::class, 'show'])->name('movie.show');
+Route::get('delete-movie/{movie}', [MovieController::class, 'destroy'])->name('movie.destroy');
+Route::patch('update-movie/{movie}', [MovieController::class, 'update'])->name('movie.update');
 
 //create another route to verify email in other table
 
