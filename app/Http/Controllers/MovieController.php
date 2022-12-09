@@ -15,7 +15,6 @@ class MovieController extends Controller
 
 	public function store(StoreMovieRequest $request, User $user): JsonResponse
 	{
-		dd($request->genre);
 		$path = $this->verifyAndUpload($request->thumbnail, 'movieImages');
 		$validated = $request->only('title', 'description', 'director', 'slug');
 		$validated['user_id'] = $user->id;
