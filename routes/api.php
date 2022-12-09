@@ -23,11 +23,13 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
 
 Route::controller(MovieController::class)->group(function () {
-	Route::post('create-movie/{user}', 'store')->name('movie.store');
-	Route::get('movies-list/{user}', 'index')->name('movie.index');
-	Route::get('movie/{movie}', 'show')->name('movie.show');
-	Route::get('delete-movie/{movie}', 'destroy')->name('movie.destroy');
-	Route::post('update-movie/{movie}', 'update')->name('movie.update');
+	Route::prefix('movie')->group(function () {
+		Route::post('store', 'store')->name('movie.store');
+		Route::get('index', 'index')->name('movie.index');
+		Route::get('show/{movie}', 'show')->name('movie.show');
+		Route::get('destroy/{movie}', 'destroy')->name('movie.destroy');
+		Route::patch('update/{movie}', 'update')->name('movie.update');
+	});
 });
 
 Route::group(['middleware' => 'jwt.auth'], function () {
