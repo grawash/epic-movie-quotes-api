@@ -5,18 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMovieRequest;
 use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class MovieController extends Controller
 {
-	public function store(StoreMovieRequest $request): JsonResponse
+	public function store(StoreMovieRequest $request, User $id): JsonResponse
 	{
-		$imageName = time() . '.' . $request->file->getClientOriginalExtension();
-		$image = $request->file('file');
+		$imageName = time() . '.' . $request->thumbnail->getClientOriginalExtension();
+		$image = $request->file('thumbnail');
 		$path = $image->storeAs('public/movieImages', $imageName);
 		$movie = new Movie();
+		$movie->movie_id = $id->id;
 		$movie->title = $request->title;
-		$slug = str_replace(' ', '-', $request->title);
+		$slug = $request->slug;
 		$movie->slug = $slug;
 		$movie->director = $request->director;
 		$movie->description = $request->description;
@@ -60,8 +62,8 @@ class MovieController extends Controller
 	{
 		$movie = $id;
 		$movie->genre()->detach();
-		$movie->update($request->only('title', 'director', 'description', 'file'));
-		$slug = str_replace(' ', '-', $request->title);
+		$movie->update($request->only('title', 'director', 'description', 'thumbnail'));
+		$slug = $request->slug;
 		$movie->slug = $slug;
 
 		if ($request->genre)

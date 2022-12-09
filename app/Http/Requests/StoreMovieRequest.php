@@ -14,11 +14,18 @@ class StoreMovieRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'title'       => '',
-			'director'    => '',
-			'description' => '',
-			'genre'       => '',
-			'file'        => '',
+			'title'            => 'required',
+			'director'         => 'required',
+			'description'      => 'required',
+			'genre'            => 'required',
+			'thumbnail'        => 'required|image',
 		];
+	}
+
+	protected function prepareForValidation()
+	{
+		$this->merge([
+			'slug' => str_replace(' ', '-', $this->get('title')),
+		]);
 	}
 }
