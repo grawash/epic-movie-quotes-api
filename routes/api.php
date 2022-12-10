@@ -23,12 +23,12 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
 
 Route::controller(MovieController::class)->group(function () {
-	Route::prefix('movie')->group(function () {
-		Route::post('store', 'store')->name('movie.store');
-		Route::get('index', 'index')->name('movie.index');
-		Route::get('show/{movie}', 'show')->name('movie.show');
-		Route::get('destroy/{movie}', 'destroy')->name('movie.destroy');
-		Route::patch('update/{movie}', 'update')->name('movie.update');
+	Route::prefix('movies')->group(function () {
+		Route::get('/', 'index')->name('movies.index');
+		Route::post('/', 'store')->name('movies.store');
+		Route::get('/{movie}', 'show')->name('movies.show');
+		Route::delete('/{movie}', 'destroy')->name('movies.destroy');
+		Route::patch('/{movie}', 'update')->name('movies.update');
 	});
 });
 

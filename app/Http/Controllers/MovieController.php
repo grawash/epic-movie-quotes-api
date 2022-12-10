@@ -16,10 +16,16 @@ class MovieController extends Controller
 
 	public function store(StoreMovieRequest $request): JsonResponse
 	{
-		$validated = $request->only('title', 'description', 'director', 'slug', 'thumbnail');
-		$validated['user_id'] = $request->userId;
+		$validated = $request->validated();
 		$validated['thumbnail'] = $this->verifyAndUpload($validated['thumbnail'], 'movieImages');
-		$movie = Movie::create($validated);
+		$movie = Movie::create([
+			'title'       => $validated['title'],
+			'director'    => $validated['director'],
+			'description' => $validated['description'],
+			'user_id'     => $validated['user_id'],
+			'slug'        => $validated['slug'],
+			'thumbnail'   => $validated['thumbnail'],
+		]);
 		foreach ($request->genre as $gen)
 		{
 			$genre = Genre::firstOrCreate(['name' => $gen]);
@@ -36,14 +42,13 @@ class MovieController extends Controller
 
 	public function show(Movie $movie): JsonResponse
 	{
-		$genres = $movie->genre()->get();
-		$movie->genres = $genres;
+		$movie->load('genres');
 		return response()->json(['movie' => $movie], 200);
 	}
 
 	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
 	{
-		$movie->genre()->detach();
+		$movie->genres()->detach();
 		$validated = $request->only('title', 'description', 'director', 'slug', 'thumbnail');
 		if ($request->thumbnail)
 		{
