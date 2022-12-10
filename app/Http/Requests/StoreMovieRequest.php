@@ -20,7 +20,6 @@ class StoreMovieRequest extends FormRequest
 			'genre'                 => 'required|array',
 			'thumbnail'             => 'required|image',
 			'user_id'               => 'required|numeric',
-			'slug'                  => '',
 		];
 	}
 

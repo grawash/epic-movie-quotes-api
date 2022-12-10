@@ -23,26 +23,27 @@ class MovieController extends Controller
 			'director'    => $validated['director'],
 			'description' => $validated['description'],
 			'user_id'     => $validated['user_id'],
-			'slug'        => $validated['slug'],
+			'slug'        => $request->slug,
 			'thumbnail'   => $validated['thumbnail'],
 		]);
 		foreach ($request->genre as $gen)
 		{
 			$genre = Genre::firstOrCreate(['name' => $gen]);
-			$movie->genre()->attach($genre);
+			$movie->genres()->attach($genre);
 		}
 		return response()->json($movie, 201);
 	}
 
 	public function index(UserIdRequest $request): JsonResponse
 	{
-		$movies = Movie::where('user_id', $request->userId)->get();
+		$movies = Movie::where('user_id', $request->user_id)->get();
 		return response()->json($movies, 200);
 	}
 
 	public function show(Movie $movie): JsonResponse
 	{
-		$movie->load('genres');
+		$genres = $movie->genres()->get();
+		$movie->genres = $genres;
 		return response()->json(['movie' => $movie], 200);
 	}
 
@@ -58,7 +59,7 @@ class MovieController extends Controller
 		foreach ($request->genre as $gen)
 		{
 			$genre = Genre::firstOrCreate(['name' => $gen]);
-			$movie->genre()->attach($genre);
+			$movie->genres()->attach($genre);
 		}
 		return response()->json(['movie' => $movie], 200);
 	}

@@ -14,7 +14,7 @@ class UserIdRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'userId'               => '',
+			'user_id'               => '',
 		];
 	}
 }
