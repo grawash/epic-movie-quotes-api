@@ -11,7 +11,7 @@ trait ImageTrait
 	 *
 	 * @return $this|false|string
 	 */
-	public function verifyAndUpload($image, $directory)
+	public function verifyAndUpload(object $image, string $directory)
 	{
 		$imageName = time() . '.' . $image->getClientOriginalExtension();
 		$path = $image->storeAs('public/' . $directory, $imageName);

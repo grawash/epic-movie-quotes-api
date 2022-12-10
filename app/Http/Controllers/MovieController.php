@@ -16,10 +16,9 @@ class MovieController extends Controller
 
 	public function store(StoreMovieRequest $request): JsonResponse
 	{
-		$path = $this->verifyAndUpload($request->thumbnail, 'movieImages');
-		$validated = $request->only('title', 'description', 'director', 'slug');
+		$validated = $request->only('title', 'description', 'director', 'slug', 'thumbnail');
 		$validated['user_id'] = $request->userId;
-		$validated['thumbnail'] = $path;
+		$validated['thumbnail'] = $this->verifyAndUpload($validated['thumbnail'], 'movieImages');
 		$movie = Movie::create($validated);
 		foreach ($request->genre as $gen)
 		{
@@ -45,11 +44,10 @@ class MovieController extends Controller
 	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
 	{
 		$movie->genre()->detach();
-		$validated = $request->only('title', 'description', 'director', 'slug');
+		$validated = $request->only('title', 'description', 'director', 'slug', 'thumbnail');
 		if ($request->thumbnail)
 		{
-			$path = $this->verifyAndUpload($request->thumbnail, 'movieImages');
-			$validated['thumbnail'] = $path;
+			$validated['thumbnail'] = $this->verifyAndUpload($validated['thumbnail'], 'movieImages');
 		}
 		$movie->update($validated);
 		foreach ($request->genre as $gen)
@@ -63,7 +61,6 @@ class MovieController extends Controller
 	public function destroy(Movie $movie): JsonResponse
 	{
 		$movie->delete();
-		// $movie->genre()->detach();
 		return response()->json('movie was deleted', 200);
 	}
 }

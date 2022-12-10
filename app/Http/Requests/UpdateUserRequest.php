@@ -14,10 +14,10 @@ class UpdateUserRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'                  => '',
-			'password'              => 'confirmed',
+			'name'                  => 'min:3|max:15',
+			'password'              => 'confirmed|min:8|max:15',
 			'password_confirmation' => '',
-			'email'                 => '',
+			'email'                 => 'email',
 		];
 	}
 }
