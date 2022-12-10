@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +21,17 @@ use Illuminate\Support\Facades\Route;
 Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::post('login', [AuthController::class, 'login'])->name('login');
 Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])->name('verification.verify');
-//create another route to verify email in other table
 
-//more routes to be added
+Route::controller(MovieController::class)->group(function () {
+	Route::prefix('movies')->group(function () {
+		Route::get('/', 'index')->name('movies.index');
+		Route::post('/', 'store')->name('movies.store');
+		Route::get('/{movie}', 'show')->name('movies.show');
+		Route::delete('/{movie}', 'destroy')->name('movies.destroy');
+		Route::patch('/{movie}', 'update')->name('movies.update');
+	});
+});
+
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 	Route::get('user', [UserController::class, 'index'])->name('user.index');

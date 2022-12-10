@@ -52,6 +52,11 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 		'email_verified_at' => 'datetime',
 	];
 
+	public function movies()
+	{
+		return $this->hasMany(Movie::class);
+	}
+
 	public function setPasswordAttribute($password)
 	{
 		$this->attributes['password'] = bcrypt($password);

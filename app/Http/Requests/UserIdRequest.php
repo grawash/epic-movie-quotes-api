@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class UserIdRequest extends FormRequest
 {
 	/**
 	 * Get the validation rules that apply to the request.
@@ -14,10 +14,7 @@ class UpdateUserRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'name'                  => 'min:3|max:15',
-			'password'              => 'confirmed|min:8|max:15',
-			'password_confirmation' => '',
-			'email'                 => 'email',
+			'user_id'               => '',
 		];
 	}
 }
