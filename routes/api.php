@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,12 @@ Route::controller(MovieController::class)->group(function () {
 		Route::get('/{movie}', 'show')->name('movies.show');
 		Route::delete('/{movie}', 'destroy')->name('movies.destroy');
 		Route::patch('/{movie}', 'update')->name('movies.update');
+	});
+});
+Route::controller(QuoteController::class)->group(function () {
+	Route::prefix('quotes')->group(function () {
+		Route::get('/', 'index')->name('quote.store');
+		Route::post('/', 'store')->name('quote.store');
 	});
 });
 
