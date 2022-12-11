@@ -22,7 +22,7 @@ class QuoteController extends Controller
 
 	public function index(): JsonResponse
 	{
-		$quotes = Quote::all();
+		$quotes = Quote::with('user')->get();
 		return response()->json($quotes, 201);
 	}
 
