@@ -34,8 +34,9 @@ Route::controller(MovieController::class)->group(function () {
 });
 Route::controller(QuoteController::class)->group(function () {
 	Route::prefix('quotes')->group(function () {
-		Route::get('/', 'index')->name('quote.store');
+		Route::get('/', 'index')->name('quote.index');
 		Route::post('/', 'store')->name('quote.store');
+		Route::delete('/{quote}', 'destroy')->name('quote.destroy');
 	});
 });
 

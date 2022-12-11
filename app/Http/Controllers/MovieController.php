@@ -43,7 +43,9 @@ class MovieController extends Controller
 	public function show(Movie $movie): JsonResponse
 	{
 		$genres = $movie->genres()->get();
+		$quotes = $movie->quotes()->get();
 		$movie->genres = $genres;
+		$movie->quotes = $quotes;
 		return response()->json(['movie' => $movie], 200);
 	}
 
