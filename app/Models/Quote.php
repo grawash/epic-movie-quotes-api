@@ -13,9 +13,9 @@ class Quote extends Model
 
 	protected $guarded = [];
 
-	public function movies(): BelongsTo
+	public function movie(): BelongsTo
 	{
-		return $this->belongsTo(Movie::class, 'movie_genres');
+		return $this->belongsTo(Movie::class);
 	}
 
 	public function comments(): HasMany
