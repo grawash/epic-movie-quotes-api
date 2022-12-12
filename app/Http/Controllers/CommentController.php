@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuoteIdRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
@@ -13,5 +14,12 @@ class CommentController extends Controller
 		$validated = $request->validated();
 		$comment = Comment::create($validated);
 		return response()->json($comment, 201);
+	}
+
+	public function index(QuoteIdRequest $request): JsonResponse
+	{
+		$comments = Comment::where('quote_id', $request->quote_id)->get();
+		$comments->load('user');
+		return response()->json($comments);
 	}
 }

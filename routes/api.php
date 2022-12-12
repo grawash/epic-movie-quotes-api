@@ -43,7 +43,8 @@ Route::controller(QuoteController::class)->group(function () {
 	});
 });
 
-Route::post('comments/store', [CommentController::class, 'store'])->name('comment.store');
+Route::post('comments/store', [CommentController::class, 'store'])->name('comments.store');
+Route::get('comments/index', [CommentController::class, 'index'])->name('comments.index');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
