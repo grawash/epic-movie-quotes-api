@@ -14,8 +14,8 @@ class UpdateQuoteRequest extends FormRequest
 	public function rules()
 	{
 		return [
-			'quote'     => 'required',
-			'movie_id'  => 'required',
+			'quote'     => 'required|string',
+			'movie_id'  => 'required|numeric',
 			'thumbnail' => '',
 		];
 	}

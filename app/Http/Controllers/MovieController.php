@@ -37,16 +37,13 @@ class MovieController extends Controller
 	public function index(UserIdRequest $request): JsonResponse
 	{
 		$movies = Movie::where('user_id', $request->user_id)->get();
-		return response()->json($movies, 200);
+		return response()->json($movies);
 	}
 
 	public function show(Movie $movie): JsonResponse
 	{
-		$genres = $movie->genres()->get();
-		$quotes = $movie->quotes()->get();
-		$movie->genres = $genres;
-		$movie->quotes = $quotes;
-		return response()->json(['movie' => $movie], 200);
+		$movie->load('quotes', 'genres');
+		return response()->json(['movie' => $movie]);
 	}
 
 	public function update(UpdateMovieRequest $request, Movie $movie): JsonResponse
@@ -63,12 +60,12 @@ class MovieController extends Controller
 			$genre = Genre::firstOrCreate(['name' => $gen]);
 			$movie->genres()->attach($genre);
 		}
-		return response()->json(['movie' => $movie], 200);
+		return response()->json(['movie' => $movie]);
 	}
 
 	public function destroy(Movie $movie): JsonResponse
 	{
 		$movie->delete();
-		return response()->json('movie was deleted', 200);
+		return response()->json('movie was deleted');
 	}
 }

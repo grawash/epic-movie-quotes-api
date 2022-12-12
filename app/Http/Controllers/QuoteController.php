@@ -23,12 +23,12 @@ class QuoteController extends Controller
 	public function index(): JsonResponse
 	{
 		$quotes = Quote::with('user')->get();
-		return response()->json($quotes, 201);
+		return response()->json($quotes);
 	}
 
 	public function show(Quote $quote): JsonResponse
 	{
-		return response()->json(['quote' => $quote], 200);
+		return response()->json(['quote' => $quote]);
 	}
 
 	public function update(UpdateQuoteRequest $request, Quote $quote): JsonResponse
@@ -39,12 +39,12 @@ class QuoteController extends Controller
 			$validated['thumbnail'] = $this->verifyAndUpload($validated['thumbnail'], 'quoteImages');
 		}
 		$quote->update($validated);
-		return response()->json(['quote' => $quote], 200);
+		return response()->json(['quote' => $quote]);
 	}
 
 	public function destroy(Quote $quote): JsonResponse
 	{
 		$quote->delete();
-		return response()->json('quote was deleted', 200);
+		return response()->json('quote was deleted');
 	}
 }
