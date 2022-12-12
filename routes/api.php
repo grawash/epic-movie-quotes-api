@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\QuoteController;
@@ -41,6 +42,8 @@ Route::controller(QuoteController::class)->group(function () {
 		Route::patch('/{quote}', 'update')->name('quotes.update');
 	});
 });
+
+Route::post('comments/store', [CommentController::class, 'store'])->name('comment.store');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');
