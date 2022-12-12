@@ -18,7 +18,6 @@ class StoreQuoteRequest extends FormRequest
 			'thumbnail'       => 'required|image',
 			'user_id'         => 'required|numeric',
 			'movie_id'        => 'required|numeric',
-			'movie_title'     => 'required|string',
 		];
 	}
 }
