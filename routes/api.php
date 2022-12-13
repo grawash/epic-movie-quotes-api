@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
@@ -41,6 +43,11 @@ Route::controller(QuoteController::class)->group(function () {
 		Route::patch('/{quote}', 'update')->name('quotes.update');
 	});
 });
+Route::get('comments', [CommentController::class, 'quoteComments'])->name('comments.quoteComments');
+Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
+
+Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');
+Route::get('notifications', [NotificationController::class, 'showUserNotifications'])->name('notifications.show');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');

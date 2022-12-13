@@ -16,6 +16,7 @@ return new class() extends Migration {
 			$table->id();
 			$table->string('name');
 			$table->string('email')->unique();
+			$table->string('thumbnail')->nullable();
 			$table->boolean('google_authenticated')->nullable();
 			$table->timestamp('email_verified_at')->nullable();
 			$table->string('password');
