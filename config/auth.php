@@ -39,9 +39,8 @@ return [
 			'driver'   => 'session',
 			'provider' => 'users',
 		],
-		'customJwt' => [
-			'driver'   => 'custom',
-			'provider' => 'users',
+		'api' => [
+			'driver'   => 'jwt',
 		],
 	],
 
@@ -116,4 +115,6 @@ return [
 	'front_end_top_level_domain' => env('FRONT_TOP_LEVEL_DOMAIN'),
 
 	'front_end_full_domain' => env('FRONT_FULL_DOMAIN'),
+
+	'back_end_full_domain' => env('BACK_FULL_DOMAIN'),
 ];

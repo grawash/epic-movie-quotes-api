@@ -5,7 +5,7 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\User;
-use App\Services\Auth\jwtGuard;
+use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -31,20 +31,25 @@ class AuthServiceProvider extends ServiceProvider
 	{
 		$this->registerPolicies();
 
-		Auth::viaRequest('broadcast', function ($request) {
-			if (!request()->cookie('access_token'))
+		Auth::viaRequest('jwt', function () {
+			try
 			{
-				throw new \ErrorException('not logged in');
-			}
+				if (!request()->cookie('access_token') && !request()->header('Authorization'))
+				{
+					throw null;
+				}
 
-			$decoded = JWT::decode(
-				request()->cookie('access_token') ?? substr(request()->header('Authorization'), 7),
-				new Key(config('auth.jwt)secret'), 'HS256')
-			);
-			return User::find($decoded->uuid);
-		});
-		Auth::extend('custom', function ($app, $name, array $config) {
-			return new jwtGuard(Auth::createUserProvider($config['provider']), $app->make('request'));
+				$decoded = JWT::decode(
+					request()->cookie('access_token') ?? substr(request()->header('Authorization'), 7),
+					new Key(config('auth.jwt_secret'), 'HS256')
+				);
+
+				return User::find($decoded->uid);
+			}
+			catch (Exception $e)
+			{
+				return null;
+			}
 		});
 	}
 }

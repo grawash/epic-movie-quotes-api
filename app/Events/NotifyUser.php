@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Comment;
+use App\Models\notification;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -13,16 +13,16 @@ class NotifyUser implements ShouldBroadcast
 {
 	use Dispatchable, InteractsWithSockets, SerializesModels;
 
-	public $comment;
+	public $notification;
 
 	/**
 	 * Create a new event instance.
 	 *
 	 * @return void
 	 */
-	public function __construct(Comment $comment)
+	public function __construct(notification $notification)
 	{
-		$this->comment = $comment;
+		$this->notification = $notification;
 	}
 
 	/**
@@ -32,6 +32,6 @@ class NotifyUser implements ShouldBroadcast
 	 */
 	public function broadcastOn()
 	{
-		return new PrivateChannel('NotifyUser' . $this->comment->quote_id);
+		return new PrivateChannel('NotifyUser.' . $this->notification->reciever_id);
 	}
 }

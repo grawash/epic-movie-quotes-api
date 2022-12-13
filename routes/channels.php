@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Quote;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -17,6 +16,6 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 	return (int) $user->id === (int) $id;
 });
-Broadcast::channel('NotifyUser.{commentQuote}', function ($user, $commentQuote) {
-	return $user->id === Quote::where('id', $commentQuote)->id;
+Broadcast::channel('NotifyUser.{userId}', function ($user, $userId) {
+	return true;
 });
