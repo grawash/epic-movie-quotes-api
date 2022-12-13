@@ -6,6 +6,7 @@ use App\Http\Requests\QuoteIdRequest;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
+use App\Events\NotifyUser;
 
 class CommentController extends Controller
 {
@@ -13,6 +14,7 @@ class CommentController extends Controller
 	{
 		$validated = $request->validated();
 		$comment = Comment::create($validated);
+		broadcast(new NotifyUser($comment))->toOthers();
 		return response()->json($comment, 201);
 	}
 

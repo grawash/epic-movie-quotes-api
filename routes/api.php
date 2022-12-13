@@ -42,7 +42,6 @@ Route::controller(QuoteController::class)->group(function () {
 		Route::patch('/{quote}', 'update')->name('quotes.update');
 	});
 });
-
 Route::post('comments/store', [CommentController::class, 'store'])->name('comments.store');
 Route::get('comments/index', [CommentController::class, 'index'])->name('comments.index');
 

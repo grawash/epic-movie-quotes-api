@@ -39,6 +39,10 @@ return [
 			'driver'   => 'session',
 			'provider' => 'users',
 		],
+		'customJwt' => [
+			'driver'   => 'custom',
+			'provider' => 'users',
+		],
 	],
 
 	/*
