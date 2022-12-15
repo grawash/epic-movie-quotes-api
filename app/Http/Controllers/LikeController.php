@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
 {
+	//to be changed
 	public function store(StoreLikeRequest $request): JsonResponse
 	{
 		$validated = $request->validated();
