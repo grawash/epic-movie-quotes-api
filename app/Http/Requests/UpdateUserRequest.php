@@ -18,6 +18,7 @@ class UpdateUserRequest extends FormRequest
 			'password'              => 'confirmed|min:8|max:15',
 			'password_confirmation' => '',
 			'email'                 => 'email',
+			'thumbnail'             => '',
 		];
 	}
 }

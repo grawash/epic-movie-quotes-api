@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
@@ -46,6 +47,9 @@ Route::controller(QuoteController::class)->group(function () {
 });
 Route::get('comments', [CommentController::class, 'quoteComments'])->name('comments.quoteComments');
 Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
+
+Route::get('locale', [LanguageController::class, 'getLocale'])->name('locale.get');
+Route::post('locale', [LanguageController::class, 'change'])->name('locale.change');
 
 Route::get('notifications', [NotificationController::class, 'showUserNotifications'])->name('notifications.showUserNotifications');
 Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');

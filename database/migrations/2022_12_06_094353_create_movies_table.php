@@ -15,10 +15,10 @@ return new class extends Migration {
 		Schema::create('movies', function (Blueprint $table) {
 			$table->id();
 			$table->foreignId('user_id');
-			$table->string('title');
+			$table->json('title');
 			$table->string('slug')->unique();
-			$table->string('director');
-			$table->string('description');
+			$table->json('director');
+			$table->json('description');
 			$table->string('thumbnail')->nullable();
 			$table->timestamps();
 			$table->timestamp('published_at')->nullable();

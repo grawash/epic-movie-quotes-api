@@ -14,8 +14,11 @@ class NotificationController extends Controller
 	public function store(StoreNotificationRequest $request): JsonResponse
 	{
 		$validated = $request->validated();
-		$notification = Notification::create($validated);
-		NotifyUser::dispatch($notification);
+		if ($validated['sender_id'] != $validated['reciever_id'])
+		{
+			$notification = Notification::create($validated);
+			NotifyUser::dispatch($notification);
+		}
 		return response()->json($notification, 201);
 	}
 

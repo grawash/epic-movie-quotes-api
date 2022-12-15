@@ -1,0 +1,41 @@
+paths:
+  /register:
+    post:
+      summary: Registers user
+      responses:
+          '201':
+            description: User created
+            content:
+              application/json:
+                schema:
+                  type: object
+  /login:
+    post:
+      summary: Registers user
+      responses:
+          '200':
+            description: User created
+            content:
+              application/json:
+                schema:
+                  type: object
+  /logout:
+    post:
+      summary: Registers user
+      responses:
+          '200':
+            description: User created
+            content:
+              application/json:
+                schema:
+                  type: object
+  /user:
+    get:
+      summary: Registers user
+      responses:
+          '200':
+            description: User created
+            content:
+              application/json:
+                schema:
+                  type: object

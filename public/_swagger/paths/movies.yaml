@@ -1,0 +1,73 @@
+paths:
+  /movies:
+    get:
+      summary: Registers user
+      responses:
+          '201':
+            description: User created
+            content:
+              application/json:
+                schema:
+                  type: object
+    post:
+      tags:
+        - movies
+      security:
+        - bearerAuth: []
+      summary: add new Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Madara Uchiha
+                  minLength: 2
+                file:
+                  type: string
+                  format: binary
+                price:
+                  type: number
+                  minimum: 0
+                  example: 100
+                wholesale_price:
+                  type: number
+                  minimum: 0
+                  example: 50
+                SQ:
+                  type: string
+                  minLength: 2
+                  example: 0000-0001
+                categoryIds:
+                  type: array
+                  items:
+                    type: integer
+                  example:
+                    - 1
+                    - 2
+                    - 3
+              required:
+                - name
+                - price
+                - wholesale_price
+                - SQ
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "../schemas/product.yaml#/components/schemas/Product"
+                  - type: object
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          type: string
+                          $ref: "../schemas/category.yaml#/components/schemas/Category"
+        "404":
+          $ref: "../common.yaml#/components/responses/404"
