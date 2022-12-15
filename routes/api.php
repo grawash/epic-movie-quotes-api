@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
@@ -46,8 +48,17 @@ Route::controller(QuoteController::class)->group(function () {
 Route::get('comments', [CommentController::class, 'quoteComments'])->name('comments.quoteComments');
 Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
 
+Route::get('locale', [LanguageController::class, 'getLocale'])->name('locale.get');
+Route::post('locale', [LanguageController::class, 'change'])->name('locale.change');
+
+Route::get('notifications', [NotificationController::class, 'showUserNotifications'])->name('notifications.showUserNotifications');
 Route::post('notifications', [NotificationController::class, 'store'])->name('notifications.store');
-Route::get('notifications', [NotificationController::class, 'showUserNotifications'])->name('notifications.show');
+Route::patch('notifications', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');
+
+Route::get('likes', [LikeController::class, 'showUserLikes'])->name('likes.showUserLikes');
+Route::post('likes', [LikeController::class, 'store'])->name('likes.store');
+Route::post('likes/chekQuoteLikeStatus', [LikeController::class, 'chekQuoteLikeStatus'])->name('likes.chekQuoteLikeStatus');
+Route::delete('likes', [LikeController::class, 'destroy'])->name('likes.destroy');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
 	Route::post('logout', [AuthController::class, 'logout'])->name('logout');

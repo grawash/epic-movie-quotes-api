@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ImageTrait;
 
 class UserController extends Controller
 {
+	use ImageTrait;
+
 	public function index(): JsonResponse
 	{
 		return response()->json(
@@ -20,16 +23,22 @@ class UserController extends Controller
 
 	public function update(UpdateUserRequest $request)
 	{
+		$validated = $request->validated();
 		$user = jwtUser();
-		if ($request->name)
+		// if ($request->name)
+		// {
+		// 	$user->name = $validated['name'];
+		// }
+		// if ($validated['password'])
+		// {
+		// 	$user->password = $validated['password'];
+		// }
+		if ($request->thumbnail)
 		{
-			$user->name = $request->name;
+			$validated['thumbnail'] = $this->verifyAndUpload($validated['thumbnail'], 'userImages');
 		}
-		if ($request->password)
-		{
-			$user->password = $request->password;
-		}
-		$user->save();
+		// $user->save();
+		$user->update($validated);
 		return response()->json(['succes', $user], 200);
 	}
 }

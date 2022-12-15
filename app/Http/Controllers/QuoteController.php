@@ -16,13 +16,19 @@ class QuoteController extends Controller
 	{
 		$validated = $request->validated();
 		$validated['thumbnail'] = $this->verifyAndUpload($validated['thumbnail'], 'quoteImages');
-		$quote = Quote::create($validated);
+		$quote = new Quote();
+		$quote->thumbnail = $validated['thumbnail'];
+		$quote->user_id = $validated['user_id'];
+		$quote->movie_id = $validated['movie_id'];
+		$quote->setTranslation('quote', 'en', $validated['quote_en']);
+		$quote->setTranslation('quote', 'ka', $validated['quote_ka']);
+		$quote->save();
 		return response()->json($quote, 201);
 	}
 
 	public function index(): JsonResponse
 	{
-		$quotes = Quote::with('user', 'movie')->get();
+		$quotes = Quote::with('user', 'movie')->paginate(12);
 		return response()->json($quotes);
 	}
 
@@ -37,8 +43,11 @@ class QuoteController extends Controller
 		if ($request->thumbnail)
 		{
 			$validated['thumbnail'] = $this->verifyAndUpload($validated['thumbnail'], 'quoteImages');
+			$quote->thumbnail = $validated['thumbnail'];
 		}
-		$quote->update($validated);
+		$quote->replaceTranslations('quote', ['en' => $request->quote_en, 'ka' => $request->quote_ka]);
+		$quote->save();
+
 		return response()->json(['quote' => $quote]);
 	}
 

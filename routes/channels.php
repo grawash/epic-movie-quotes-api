@@ -19,3 +19,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('NotifyUser.{userId}', function ($user, $userId) {
 	return true;
 });
+Broadcast::channel('NotificationsRead.{userId}', function ($user, $userId) {
+	return true;
+});

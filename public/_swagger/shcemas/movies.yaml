@@ -1,0 +1,23 @@
+components:
+  schemas:
+    Product:
+      allOf:
+        - $ref: "../common.yaml#/components/schemas/Id"
+        - type: object
+          properties:
+            name:
+              type: string
+              example: Madara Uchiha
+            price:
+              type: number
+              example: 100
+            wholesale_price:
+              type: number
+              example: 50
+            SQ:
+              type: string
+              example: 000-0001
+            colors:
+              type: string
+              example: red
+        - $ref: "../common.yaml#/components/schemas/TimeStamps"
